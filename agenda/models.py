@@ -17,4 +17,6 @@ class turnos(models.Model):
 class grupos(models.Model):
     turno = models.ForeignKey(turnos, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
+    def __str__(self):
+        return f'{self.user.username} - {self.turno.dia_hora}'
  

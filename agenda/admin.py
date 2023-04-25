@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import turnos, grupos
 
-# Register your models here.
+admin.site.register(turnos)
+admin.site.register(grupos)
