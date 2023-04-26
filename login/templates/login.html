@@ -1,13 +1,15 @@
 {% extends 'layout.html' %}
 {% block contenido %}
-
 <form method="POST">
     {% csrf_token %}
-    <p><label for="username_id"> Usuario </label></p>
-    <p>{{ form.username }}</p>
-    <p><label for="password_id"> clave </label></p>
-    <p>{{ form.password }}</p>
-    <p> <button> Ingresar</button></p>
+    <div class="mb-3">
+        <label for="username_id" class="form-label formColor">Usuario:</label>
+        {{ form.username }}
+    </div>
+    <div class="mb-3">
+        <label for="password_id" class="form-label formColor">Contraseña:</label>
+        {{ form.password }}
+    </div>
+    <button type="submit" class="btn btn-outline-success">Iniciar Sesión</button>
 </form>
-
 {% endblock %}
