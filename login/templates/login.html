@@ -1,15 +1,17 @@
 {% extends 'layout.html' %}
 {% block contenido %}
+<section class="container mt-4 mb-3">
 <form method="POST">
     {% csrf_token %}
     <div class="mb-3">
         <label for="username_id" class="form-label formColor">Usuario:</label>
-        {{ form.username }}
+        <input class="form-control" id="username_id" aria-describedby="emailHelp" placeholder="Usuario/Alias" name="username">
     </div>
     <div class="mb-3">
         <label for="password_id" class="form-label formColor">Contraseña:</label>
-        {{ form.password }}
+        <input type="password" class="form-control" id="password_id" name="password" placeholder="Clave">
     </div>
     <button type="submit" class="btn btn-outline-success">Iniciar Sesión</button>
 </form>
+</section>
 {% endblock %}
