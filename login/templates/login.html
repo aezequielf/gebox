@@ -1,11 +1,12 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <section class="container mt-4 mb-3">
-<form method="POST">
+    {{ msj }}
+<form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="username_id" class="form-label formColor">Usuario:</label>
-        <input class="form-control" id="username_id" aria-describedby="emailHelp" placeholder="Usuario/Alias" name="username">
+        <label for="email_id" class="form-label formColor">E-Mail:</label>
+        <input class="form-control" id="email_id" aria-describedby="emailHelp" placeholder="email@server.tld" name="email">
     </div>
     <div class="mb-3">
         <label for="password_id" class="form-label formColor">Contraseña:</label>
