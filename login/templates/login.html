@@ -5,8 +5,9 @@
 <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="email_id" class="form-label formColor">E-Mail:</label>
-        <input class="form-control" id="email_id" aria-describedby="emailHelp" placeholder="email@server.tld" name="email">
+        <label for="email_id" class="form-label formColor">Email:</label>
+        <input type="email" name="email" class="form-control" id="email_id" placeholder="email@server.tld" aria-describedby="emailHelp" >
+        <div id="emailHelp" class="form-text">No comparitremos su Email con nadie.</div>
     </div>
     <div class="mb-3">
         <label for="password_id" class="form-label formColor">Contraseña:</label>
