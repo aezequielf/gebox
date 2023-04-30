@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 # Create your views here.
 def login_home(request):
@@ -31,6 +33,24 @@ def user_logout(request):
     context = { 'msj' : 'Ha cerrado correctamente la Sesión'}
     return render(request, 'login.html', context)
 
-
-
-    
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'register.html')
+    elif request.method == 'POST':
+        if len(User.objects.values('username').filter(email=request.POST['email'])) == 0:
+            if request.POST['password1'] == request.POST['password2']:
+                try:
+                   User.objects.create_user(request.POST['username'].capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],date_joined=timezone.now())
+                except IntegrityError:
+                    context = { 'msj' : f"El alias {request.POST['username']} ya está en uso ! "}
+                    return render(request, 'register.html', context)
+                return render(request, 'login.html' ,context = {'msj':'Ya puedes iniciar sesión con tu usuario creado'} )
+            else:
+                context = { 'msj' : 'Las claves no coinciden'}
+                return render(request, 'register.html', context)
+        else:
+            context = { 'msj' : f"La dirección de correo {request.POST['email']} no está disponible"}
+            return render(request, 'register.html', context)
+    else:
+        context = { 'msj' : 'Método desconocido'}
+        return render(request, 'register.html', context)

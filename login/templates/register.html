@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <section class="container mt-4 mb-3">
+        {{ msj }}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label formColor">Email:</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required="true">
+                <div id="emailHelp" class="form-text">No comparitremos su Email con nadie.</div>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label formColor">Nombre:</label>
+                <input type="nombre" class="form-control " id="nombre" placeholder="Nombre" name="first_name" required="true">
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label formColor">Apellido:</label>
+                <input type="apellido" class="form-control" id="apellido" placeholder="last_name" name="last_name">
+            </div>
+            <div class="mb-3">
+            <label for="username" class="form-label formColor">Alias:</label>
+            <input type="username" class="form-control" id="username" placeholder="Alias" name="username" required="true">
+            </div>
+            
+            <div class="mb-3">
+                <label for="password1" class="form-label formColor">Contraseña:</label>
+                <input type="password" class="form-control" id="password1" placeholder="Clave" name="password1" required="true">
+            </div>
+            <div class="mb-3">
+                <label for="password2" class="form-label formColor">Repita su contraseña:</label>
+                <input type="password" class="form-control" id="password2" placeholder="Confirme la clave" name="password2">
+            </div>
+            <button type="submit" class="btn btn-outline-success">Registrarse</button>
+        
+        </form>
+
+    </section>
+{% endblock %}

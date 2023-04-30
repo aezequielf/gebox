@@ -108,7 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Argentina/Cordoba'
 
 USE_I18N = True
 
@@ -130,5 +131,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'index_agenda'
-LOGOUT_REDIRECT_URL = 'login'
+#LOGIN_REDIRECT_URL = 'index_agenda'
+#LOGOUT_REDIRECT_URL = 'login'
