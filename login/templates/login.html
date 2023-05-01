@@ -6,11 +6,11 @@
     {% csrf_token %}
     <div class="mb-3">
         <label for="email_id" class="form-label formColor">Email:</label>
-        <input type="email" name="email" class="form-control" id="email_id" placeholder="name@example.com" aria-describedby="emailHelp" >
+        <input type="email" name="email" class="form-control" id="email_id" placeholder="name@example.com" aria-describedby="emailHelp" required="true">
     </div>
     <div class="mb-3">
         <label for="password_id" class="form-label formColor">Contraseña:</label>
-        <input type="password" class="form-control" id="password_id" name="password" placeholder="Clave">
+        <input type="password" class="form-control" id="password_id" name="password" placeholder="Clave" required="true">
     </div>
     <button type="submit" class="btn btn-outline-success">Iniciar Sesión</button>
 </form>

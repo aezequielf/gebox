@@ -40,11 +40,11 @@ def register(request):
         if len(User.objects.values('username').filter(email=request.POST['email'])) == 0:
             if request.POST['password1'] == request.POST['password2']:
                 try:
-                   User.objects.create_user(request.POST['username'].capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],date_joined=timezone.now())
+                   User.objects.create_user(request.POST['username'].capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],is_active=False,date_joined=timezone.now())
                 except IntegrityError:
                     context = { 'msj' : f"El alias {request.POST['username']} ya está en uso ! "}
                     return render(request, 'register.html', context)
-                return render(request, 'login.html' ,context = {'msj':'Ya puedes iniciar sesión con tu usuario creado'} )
+                return render(request, 'login.html' ,context = {'msj':'Ahora espera que el Coach te apruebe para poder empezar a registrarte'} )
             else:
                 context = { 'msj' : 'Las claves no coinciden'}
                 return render(request, 'register.html', context)
