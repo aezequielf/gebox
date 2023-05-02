@@ -1,25 +1,32 @@
 {% extends 'layout.html' %}
 {% block contenido %}
     <section class="container mt-4 mb-3">
+        {% if messages %}
+            {% for mensaje in messages%}
+                <div class="alert alert-{{ mensaje.tags }}" role="alert">
+                    {{ mensaje }}
+                </div>
+            {% endfor %}
+        {% endif %}
         {{ msj }}
         <form action="" method="POST">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="email" class="form-label formColor">Email:</label>
-                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required="true">
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required="true" value="{{ email }}">
                 <div id="emailHelp" class="form-text">No comparitremos su Email con nadie.</div>
             </div>
             <div class="mb-3">
                 <label for="nombre" class="form-label formColor">Nombre:</label>
-                <input type="nombre" class="form-control " id="nombre" placeholder="Nombre" name="first_name" required="true">
+                <input type="nombre" class="form-control " id="nombre" placeholder="Nombre" name="first_name" required="true" value="{{ first_name }}">
             </div>
             <div class="mb-3">
                 <label for="apellido" class="form-label formColor">Apellido:</label>
-                <input type="apellido" class="form-control" id="apellido" placeholder="Apellido" name="last_name">
+                <input type="apellido" class="form-control" id="apellido" placeholder="Apellido" name="last_name" value="{{ last_name }}">
             </div>
             <div class="mb-3">
             <label for="username" class="form-label formColor">Alias:</label>
-            <input type="username" class="form-control" id="username" placeholder="Alias" name="username" required="true">
+            <input type="username" class="form-control" id="username" placeholder="Alias" name="username" required="true" value="{{ username }}">
             </div>
             
             <div class="mb-3">

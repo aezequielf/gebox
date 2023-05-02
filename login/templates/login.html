@@ -1,6 +1,13 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <section class="container mt-4 mb-3">
+    {% if messages %}
+        {% for mensaje in messages%}
+            <div class="alert alert-{{ mensaje.tags }}" role="alert">
+                {{ mensaje }}
+            </div>
+        {% endfor %}
+    {% endif %}
     {{ msj }}
 <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 # Create your views here.
 def login_home(request):
     if request.method == 'GET':
@@ -12,25 +13,30 @@ def login_home(request):
         try:
             usuario = User.objects.values('username').get(email__exact=request.POST['email'])
         except ObjectDoesNotExist:
-            context = { 'msj' : 'Correo o Clave no válidos'}
+            context = { 'msj' : ''}
+            messages.warning(request, '¡Correo o Clave no válidos!')
             return render(request, 'login.html', context)
         except Exception as erro:
-            context = { 'msj' : erro }
+            context = { 'msj' : '' }
+            messages.add_message(request, messages.ERROR, erro, extra_tags='danger')
             return render(request, 'login.html', context)
         usuario_aut = authenticate(request, username = usuario['username'], password = request.POST['password'])
         if usuario_aut is None:
-            context = { 'msj' : 'Correo o Clave no válidos'}
+            context = { 'msj' : ''}
+            messages.warning(request, '¡Correo o Clave no válidos!')
             return render(request, 'login.html', context)
         else:
             login(request, usuario_aut)
             return redirect('index_agenda')
     else:
-        context = { 'msj' : 'Metodo desconocido, intente de nuevo por favor' }
+        context = { 'msj' : '' }
+        messages.add_message(request, messages.ERROR, 'Método desconocido', extra_tags='danger')
         return render(request, 'login.html', context)
 
 def user_logout(request):
     logout(request)
-    context = { 'msj' : 'Ha cerrado correctamente la Sesión'}
+    messages.info(request, 'Ha cerrado sesión correctamente')
+    context = { 'msj' : ''}
     return render(request, 'login.html', context)
 
 def register(request):
@@ -42,15 +48,21 @@ def register(request):
                 try:
                    User.objects.create_user(request.POST['username'].capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],is_active=False,date_joined=timezone.now())
                 except IntegrityError:
-                    context = { 'msj' : f"El alias {request.POST['username']} ya está en uso ! "}
+                    context = { 'msj' : '', 'last_name' : request.POST['last_name'],'first_name' : request.POST['first_name'],'email' : request.POST['email'],}
+                    messages.add_message(request, messages.INFO, f"¡El alias {request.POST['username']} ya está en uso ! ", extra_tags='secondary')
                     return render(request, 'register.html', context)
-                return render(request, 'login.html' ,context = {'msj':'Ahora espera que el Coach te apruebe para poder empezar a registrarte'} )
+                messages.success(request, 'Listo, ahora espera que te aprueben para ingresar a la app. ¡Muchas gracias!')
+                return render(request, 'login.html' ,context = {'msj':''} )
             else:
-                context = { 'msj' : 'Las claves no coinciden'}
+                context = { 'msj' : '', 'username' : request.POST['username'],'last_name' : request.POST['last_name'],'first_name' : request.POST['first_name'],'email' : request.POST['email']}
+                messages.warning(request, '¡Las claves no coinciden !')
                 return render(request, 'register.html', context)
         else:
-            context = { 'msj' : f"La dirección de correo {request.POST['email']} no está disponible"}
+            context = { 'msj' : '', 'username' : request.POST['username'],'last_name' : request.POST['last_name'],'first_name' : request.POST['first_name']}
+            messages.add_message(request, messages.INFO, f"¡La dirección de correo {request.POST['email']} no está disponible !", extra_tags='secondary')
             return render(request, 'register.html', context)
     else:
-        context = { 'msj' : 'Método desconocido'}
+        messages.add_message(request, messages.ERROR, 'Método desconocido', extra_tags='danger')
         return render(request, 'register.html', context)
+    
+
