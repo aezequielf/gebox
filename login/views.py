@@ -8,7 +8,10 @@ from django.contrib import messages
 # Create your views here.
 def login_home(request):
     if request.method == 'GET':
-        return render(request, 'login.html')
+        if request.user.is_authenticated:
+            return redirect('index_agenda')
+        else:
+            return render(request, 'login.html')
     elif request.method == 'POST':
         try:
             usuario = User.objects.values('username').get(email__exact=request.POST['email'])
