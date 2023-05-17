@@ -20,3 +20,17 @@ class grupos(models.Model):
     def __str__(self):
         return f'{self.user.username} - {self.turno.dia_hora}'
  
+class params_ag(models.Model):
+    dia=models.CharField(max_length=2)
+    hora=models.TimeField()
+    def __str__(self) -> str:
+        if self.dia == 'lu':
+            return f' Lunes {self.hora}'
+        if self.dia == 'ma':
+            return f' Martes {self.hora}'
+        if self.dia == 'mi':
+            return f' Miercoles {self.hora}'
+        if self.dia == 'ju':
+            return f' Jueves {self.hora}'
+        if self.dia == 'vi':
+            return f' Viernes {self.hora}'
