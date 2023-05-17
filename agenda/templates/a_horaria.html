@@ -1,11 +1,57 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <section class="container mt-4 mb-3">
-    <h1>Anotados dia xx-xx-xxxx hora xx</h1>
+    <!-- <h1>Anotados dia xx-xx-xxxx hora xx</h1>
     <ul>
         <li>Emi</li>
         <li>Eze <a href="/borrar/Eze">X</a></li>
         <li>Jime</li>
-    </ul>
+    </ul> -->
+<div class="row">
+
+    <div class="mb-4 col-md-6 col-xl-3">
+        <div class="card border-success mb-3">
+          <div class="card-header bg-transparent border-success">Anotados dia xx-xx-xxxx hora xx </div> <!--horario con back-->
+          <div class="card-body text-success botones">
+
+            <table class="table ">
+              <tbody>
+                <thead>
+                  <tr>
+                    <th scope="col"> </th> <!--id alumno-->
+                    <th scope="col"> </th> <!--Nombre del alumno-->
+                    <th scope="col"> </th> <!--Accion de eliminar-->
+                  </tr>
+                </thead>
+                <tr>
+                  <th scope="row"></th> <!--id-->
+                  <td> Emi </td> <!--Nombre-->
+            
+                  <td> <a href="" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"></th> <!--id-->
+                  <td> Eze</td> <!--Nombre-->
+                  <td> <a href="/borrar/Eze" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"></th> <!--id-->
+                    <td> Jime</td> <!--Nombre-->
+                    <td> <a href="" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
+                  </tr>
+
+              </tbody>
+              
+            </table>
+            
+          </div>
+          <!-- <div class="card-footer bg-transparent border-danger">Footer</div> -->
+        </div>
+    </div>
+
+</div>
+
 </section>
 {% endblock %}
