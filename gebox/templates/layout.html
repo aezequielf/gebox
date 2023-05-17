@@ -47,8 +47,13 @@
                   <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                      <a  class="nav-link" href="calendario.html">Calendario</a>
+                      <a  class="nav-link" href="{% url 'index_agenda' %}">Agenda</a>
                     </li>
+                        {% if user.is_staff %}
+                         <li class="nav-item">
+                           <a class="nav-link" href="/admin/">Admin</a>
+                          </li>
+                        {% endif %}
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'logout' %}">Cerrar sesion</a>
                     </li>

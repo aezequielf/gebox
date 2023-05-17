@@ -25,7 +25,7 @@ body footer {
   box-sizing: border-box;
   padding: 10px;
   margin-top: auto;
-  background-color: #2d530a;
+  background-image: linear-gradient(to left,#141414,#1f621f);
 }
 
 body footer .text-muted {
@@ -44,7 +44,7 @@ body footer .bi, body footer .bi-instagram {
 
 /* NavBar */
 header {
-  background-color: #2d530a;
+  background-image: linear-gradient(to left,#141414,#1f621f);
   font-size: large !important;
   padding: 10px;
   display: block;

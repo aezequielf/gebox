@@ -1,7 +1,11 @@
 {% extends 'layout.html' %}
 {% block contenido %}
-<section class="container-fluid mt-3">
-    llegue al home
-</section>
-
+    <section class="container mt-4 mb-3">
+        <h1>Días activos con horarios</h1>
+        <ul>
+            <li><a href="{% url 'index_diario' %}">Lunes</a></li>
+            <li><a href="{% url 'index_diario' %}">Miercoles</a></li>
+            <li><a href="{% url 'index_diario' %}">Viernes</a></li>
+        </ul>
+    </section>
 {% endblock %}
