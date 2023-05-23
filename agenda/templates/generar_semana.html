@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<section class="container mt-4 mb-3">
+    {% if messages %}
+        {% for mensaje in messages%}
+            <div class="alert alert-{{ mensaje.tags }}" role="alert">
+                {{ mensaje }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {{ msj }}
+    <div class="row">
+        <div class="mb-4 col-md-6 col-xl-3">
+          <div class="card border-success mb-3">
+            <div class="card-header bg-transparent border-success">Generar semana para la Agenda </div> 
+            <div class="card-body text-success botones">
+                <form action="{% url 'generar_semana' %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success boton">Generar ahora</button>
+                </form>
+            </div>
+          </div>
+        </div>
+</section>
+{% endblock %}
