@@ -1,25 +1,14 @@
 {% extends 'layout.html' %}
 {% block contenido %}
     <section class="container mt-4 mb-3">
-        <!-- <h1>Días activos con horarios</h1>
-        <ul>
-            <li><a href="{% url 'index_diario' %}">Lunes</a></li>
-            <li><a href="{% url 'index_diario' %}">Miercoles</a></li>
-            <li><a href="{% url 'index_diario' %}">Viernes</a></li>
-        </ul> -->
-
+        {{ msj }}
         <div class="row">
             <div class="mb-4 col-md-6 col-xl-3">
               <div class="card border-success mb-3">
-                <div class="card-header bg-transparent border-success">Agenda (Horarios Activos) </div> <!--Fecha con back-->
+                <div class="card-header bg-transparent border-success">Agenda (Días c/hs. activos) </div> <!--Fecha con back-->
                 <div class="card-body text-success botones">
-                    
-                        <a href="{% url 'index_diario' %}"><button type="button" class="btn btn-outline-success boton">Lunes</button></a>
-                        <a href="{% url 'index_diario' %}"><button type="button" class="btn btn-outline-success boton">Miércoles</button></a>
-                        <a href="{% url 'index_diario' %}"><button type="button" class="btn btn-outline-success boton">Viernes</button></a>
-
-
-                  
+                  {% for dia in dias %} 
+                  <a href="{% url 'index_diario' fecha=dia.1 %}"><button type="button" class="btn btn-outline-success boton"> {{ dia.0 }} </button></a>{% endfor %}  
                 </div>
               </div>
             </div>

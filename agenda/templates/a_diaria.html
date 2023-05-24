@@ -1,24 +1,15 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <section class="container mt-4 mb-3">
-    <!-- <h1>Horarios del día</h1>
-    <ul>
-        <li><a href="{% url 'index_horaria' %}">15:30</a></li>
-        <li><a href="{% url 'index_horaria' %}">19:00</a></li>
-        <li><a href="{% url 'index_horaria' %}">20:00</a></li>
-    </ul> -->
+    {{ msj }}
     <div class="row">
         <div class="mb-4 col-md-6 col-xl-3">
           <div class="card border-success mb-3">
-            <div class="card-header bg-transparent border-success">Horarios del día</div> <!--Fecha con back-->
+            <div class="card-header bg-transparent border-success">Horarios del {{ dia_letras }} {{ fecha }}</div>  
             <div class="card-body text-success botones">
-                
-                    <a href="{% url 'index_horaria' %}"><button type="button" class="btn btn-outline-success boton">15:30</button></a>
-                    <a href="{% url 'index_horaria' %}"><button type="button" class="btn btn-outline-success boton">19:00</button></a>
-                    <a href="{% url 'index_horaria' %}"><button type="button" class="btn btn-outline-success boton">20:00</button></a>
-
-
-              
+              {% for hora in horarios%}
+                <a href="{% url 'index_horaria' id=hora.1 %}"><button type="button" class="btn btn-outline-success boton">{{ hora.0 }}</button></a>
+              {% endfor %}
             </div>
           </div>
         </div>
