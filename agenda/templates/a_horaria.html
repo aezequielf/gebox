@@ -11,9 +11,9 @@
 
     <div class="mb-4 col-md-6 col-xl-3">
         <div class="card border-success mb-3">
-          <div class="card-header bg-transparent border-success">Anotados dia xx-xx-xxxx hora xx </div> <!--horario con back-->
+          {{ user.username }}
+          <div class="card-header bg-transparent border-success">Anotados dia {{ dia_letra }} {{ dia_hora }} </div> <!--horario con back--> 
           <div class="card-body text-success botones">
-
             <table class="table ">
               <tbody>
                 <thead>
@@ -23,25 +23,28 @@
                     <th scope="col"> </th> <!--Accion de eliminar-->
                   </tr>
                 </thead>
+                <tr><td colspan="3">{{ msj }}</td></tr>
+                {% for alumno in alumnos %}
                 <tr>
                   <th scope="row"></th> <!--id-->
-                  <td> Emi </td> <!--Nombre-->
-            
-                  <td> <a href="" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
+                  <td> {{ alumno.user__username}} </td> <!--Nombre-->
+                  {% if alumno.user__id == user.id or user.is_staff %} 
+                    <td> 
+                      <form action="{% url 'borra_alumno' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="method_" value="DELETE">
+                        <input type="hidden" name="item_grupo_id" value="{{ alumno.id }}">
+                        {# alumno.id tiene el id del grupo ( grupo = relacion many to many turno_id <==> alumno_id ) #}
+                        <input type="hidden" name="id_turno" value="{{ id_turno }}">
+                      <button class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</button>
+                      </form>
+                    </td>
+                  {% endif %}
                 </tr>
-
-                <tr>
-                  <th scope="row"></th> <!--id-->
-                  <td> Eze</td> <!--Nombre-->
-                  <td> <a href="/borrar/Eze" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
-                </tr>
-                
-                <tr>
-                    <th scope="row"></th> <!--id-->
-                    <td> Jime</td> <!--Nombre-->
-                    <td> <a href="" class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</a></td>
-                  </tr>
-
+                {% endfor %}
+                {% if anotarme %}
+                <tr><td colspan="3">Anotarme</td></tr>
+                {% endif %}
               </tbody>
               
             </table>
@@ -50,7 +53,7 @@
           <!-- <div class="card-footer bg-transparent border-danger">Footer</div> -->
         </div>
 
-        <a href="javascript:window.history.back();"><button type="button" class=" btn btn-outline-success"><i class="bi bi-arrow-left"> Atrás</i></button></a>
+        <a href="{% url 'index_diario' fecha=dia_hora %}"><button type="button" class=" btn btn-outline-success"><i class="bi bi-arrow-left"> Atrás</i></button></a>
 
     </div>
 

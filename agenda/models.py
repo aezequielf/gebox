@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -14,14 +15,16 @@ class turnos(models.Model):
     detalle = models.CharField(max_length = 60, null = True, blank = True)
 
     def __str__(self):
-        return f' Turno {self.dia_hora} '
+        turno = timezone.localtime(self.dia_hora)
+        return f' Turno {turno} '
        
 
 class grupos(models.Model):
     turno = models.ForeignKey(turnos, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     def __str__(self):
-        return f'{self.user.username} - {self.turno.dia_hora}'
+        turno = timezone.localtime(self.turno.dia_hora)
+        return f'{self.user.username} - {turno}'
  
 class params_ag(models.Model):
     dia=models.CharField(max_length=2)
