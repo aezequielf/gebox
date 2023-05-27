@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed
 from django.contrib import messages
 from django.utils import timezone
@@ -70,7 +71,19 @@ def borra_alumno(request):
         except:
             return HttpResponseBadRequest('<h1> Consulta invalida </h1>')
         grupo.delete()
-        print('borro alumno')
+        messages.warning(request, '¡Gracias por avisarnos que no vas a poder asistir a este turno !')
         return index_hora(request, turno_id)
+    else:
+        return HttpResponseNotAllowed('<h1> Metodo no disponible </h1>')
+
+def agrega_alumno(request):
+    if request.method == 'POST':
+        if not request.POST['id_turno'] or not request.POST['id_user']:
+            return HttpResponseBadRequest('<h1> Consulta invalida </h1>')
+        alumno = User.objects.get(id=request.POST['id_user'])
+        turno = turnos.objects.get(id=request.POST['id_turno'])
+        grupos.objects.create(turno = turno, user = alumno)
+        messages.success(request, '¡Te anotaste, gracias !')
+        return index_hora(request, request.POST['id_turno'])
     else:
         return HttpResponseNotAllowed('<h1> Metodo no disponible </h1>')
