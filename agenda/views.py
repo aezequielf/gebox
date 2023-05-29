@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed
 from django.contrib import messages
@@ -16,7 +16,7 @@ def index_agenda(request):
         diario = turnos.objects.filter( dia_hora__gte = dia_inicio_semana).order_by('dia_hora')
         if len(diario) == 0:
             context = { 'msj': 'No se ha generado la agenda semanal aún ...' , 'dias' :' '}
-            return render(request, 'index.html', context)
+            return render(request, 'sin-agenda.html', context)
         dias_activos = []
         for dia in diario:
             dia_comp= (dia_num2let(dia.dia_hora.date().weekday()),dia.dia_hora.date().strftime('%d-%m-%Y'))
@@ -32,7 +32,12 @@ def index_diario(request, fecha = None):
         if not fecha:
             return HttpResponseBadRequest('<h1> Faltan parametros en la solicitud </h1>')
         dia_l = fecha.split('-')
-        dia = datetime(int(dia_l[2][:4]),int(dia_l[1]),int(dia_l[0]),0,0)
+        try:
+            dia = datetime(int(dia_l[2][:4]),int(dia_l[1]),int(dia_l[0]),0,0)
+        except ValueError:
+            return HttpResponseBadRequest('<h1> Datos mal formados o invalidos </h1>')
+        except IndexError:
+            return HttpResponseNotFound('<h1> No se encuentra la URL solicitada </h1>')
         dia = timezone.make_aware(dia)
         horarios = turnos.objects.filter(dia_hora__contains=dia.date())
         horarios_activos = []
@@ -50,7 +55,7 @@ def index_hora(request, id = None):
     try:
         fecha= turnos.objects.values('dia_hora').get(id=id)
     except:
-        return HttpResponseBadRequest('<h1> datos de ingreso invalidos  </h1>')
+        return HttpResponseBadRequest('<h1> Datos de ingreso invalidos  </h1>')
     alumnos = grupos.objects.select_related('user').values('id','user__username','user__id').filter(turno_id=id)
     anotarme = True
     for alumno in alumnos:
@@ -72,7 +77,8 @@ def borra_alumno(request):
             return HttpResponseBadRequest('<h1> Consulta invalida </h1>')
         grupo.delete()
         messages.warning(request, '¡Gracias por avisarnos que no vas a poder asistir a este turno !')
-        return index_hora(request, turno_id)
+        #return index_hora(request, turno_id)
+        return redirect(reverse('index_horaria', args=[turno_id]))
     else:
         return HttpResponseNotAllowed('<h1> Metodo no disponible </h1>')
 
@@ -84,6 +90,6 @@ def agrega_alumno(request):
         turno = turnos.objects.get(id=request.POST['id_turno'])
         grupos.objects.create(turno = turno, user = alumno)
         messages.success(request, '¡Te anotaste, gracias !')
-        return index_hora(request, request.POST['id_turno'])
+        return redirect(reverse('index_horaria', args=[request.POST['id_turno']]))
     else:
         return HttpResponseNotAllowed('<h1> Metodo no disponible </h1>')
