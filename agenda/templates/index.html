@@ -3,13 +3,14 @@
     <section class="container mt-4 mb-3">
         {{ msj }} 
         <div class="row">
-            <div class="mb-4 col-md-6 col-xl-3">
+            <div class="mb-4 col-md-6 col-xl-6">
               <div class="card border-success mb-3">
-                <span class="d-block p-2 bg-success text-black">{{ user.username }}</span>
-                <div class="card-header bg-transparent border-success">Agenda (Días c/hs. activos) </div> <!--Fecha con back-->
+                <span class="d-block p-2 bg-success text-white">{{ user.username }}</span>
+                <div class="card-header bg-transparent border-success">Agenda (Días con horarios activos) </div> <!--Fecha con back-->
                 <div class="card-body text-success botones">
                   {% for dia in dias %} 
-                  <a href="{% url 'index_diario' fecha=dia.1 %}"><button type="button" class="btn btn-outline-success boton"> {{ dia.0 }} </button></a>{% endfor %}  
+                    <a href="{% url 'index_diario' fecha=dia.1 %}"><button type="button" class="btn btn-outline-success boton"> {{ dia.0 }} </button></a>
+                  {% endfor %}  
                 </div>
               </div>
             </div>

@@ -9,9 +9,9 @@
     {% endfor %}
   {% endif %}
 <div class="row">
-    <div class="mb-4 col-md-6 col-xl-3">
+    <div class="mb-4 col-md-6 col-xl-6">
         <div class="card border-success mb-3">
-          <span class="d-block p-2 bg-success text-black">{{ user.username }}</span>
+          <span class="d-block p-2 bg-success text-white">{{ user.username }}</span>
           <div class="card-header bg-transparent border-success">Anotados dia {{ dia_letra }} {{ dia_hora }} </div> <!--horario con back--> 
           <div class="card-body text-success botones">
             <table class="table ">
@@ -36,7 +36,9 @@
                         <input type="hidden" name="item_grupo_id" value="{{ alumno.id }}">
                         {# alumno.id tiene el id del grupo ( grupo = relacion many to many turno_id <==> alumno_id ) #}
                         <input type="hidden" name="id_turno" value="{{ id_turno }}">
-                      <button class="text-danger badge badge-danger text-decoration-none"> <i class="bi bi-x-square"></i> Eliminar</button>
+                      <!-- <button class="text-danger badge badge-danger text-decoration-none"><i class="bi bi-trash3-fill"></i> Eliminar</button> -->
+                        <button class="btn btn-outline-danger "><i class="bi bi-trash3-fill"></i> Cancelar</button>
+
                       </form>
                     </td>
                   {% endif %}
@@ -48,7 +50,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="id_turno" value="{{ id_turno }}">
                     <input type="hidden" name="id_user" value="{{ user.id }}">
-                    <button type="submit" class="btn btn-outline-dark">Anotarme</button>
+                    <button type="submit" class="btn btn-outline-success">Anotarme</button>
                   </form>
                 </td></tr>
                 {% endif %}
