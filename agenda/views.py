@@ -19,9 +19,11 @@ def index_agenda(request):
             return render(request, 'sin-agenda.html', context)
         dias_activos = []
         for dia in diario:
+            if dia.dia_hora.date() < timezone.now().date():
+                continue
             dia_comp= (dia_num2let(dia.dia_hora.date().weekday()),dia.dia_hora.date().strftime('%d-%m-%Y'))
             if dia_comp not in dias_activos:
-                dias_activos.append(dia_comp) 
+                dias_activos.append(dia_comp)
         context = { 'msj': '' , 'dias' : dias_activos}
         return render(request, 'index.html', context)
     else:
@@ -42,6 +44,8 @@ def index_diario(request, fecha = None):
         horarios = turnos.objects.filter(dia_hora__contains=dia.date())
         horarios_activos = []
         for hora in horarios:
+            if hora.dia_hora < timezone.now() + timedelta(minutes=30):
+                continue
             hora_local=timezone.localtime(hora.dia_hora)
             horarios_activos.append((hora_local.time().strftime("%H:%M"),hora.id))
         context = { 'msj': '', 'fecha' : fecha , 'dia_letras': dia_num2let(dia.weekday()) , 'horarios' : horarios_activos}
