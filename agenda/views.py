@@ -19,7 +19,7 @@ def index_agenda(request):
             return render(request, 'sin-agenda.html', context)
         dias_activos = []
         for dia in diario:
-            if dia.dia_hora.date() < timezone.now().date():
+            if dia.dia_hora.date() < timezone.now().date() and not request.user.is_staff:
                 continue
             dia_comp= (dia_num2let(dia.dia_hora.date().weekday()),dia.dia_hora.date().strftime('%d-%m-%Y'))
             if dia_comp not in dias_activos:
@@ -44,7 +44,7 @@ def index_diario(request, fecha = None):
         horarios = turnos.objects.filter(dia_hora__contains=dia.date())
         horarios_activos = []
         for hora in horarios:
-            if hora.dia_hora < timezone.now() + timedelta(minutes=30):
+            if hora.dia_hora < timezone.now() + timedelta(minutes=30) and not request.user.is_staff:
                 continue
             hora_local=timezone.localtime(hora.dia_hora)
             horarios_activos.append((hora_local.time().strftime("%H:%M"),hora.id))
@@ -67,6 +67,9 @@ def index_hora(request, id = None):
             anotarme = False
     if len(alumnos) == 0:
         context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  } 
+    elif len(alumnos) > 3:
+        messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
+        context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
     else:
         context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
     return render(request, 'a_horaria.html', context)
@@ -80,7 +83,10 @@ def borra_alumno(request):
         except:
             return HttpResponseBadRequest('<h1> Consulta invalida </h1>')
         grupo.delete()
-        messages.warning(request, '¡Gracias por avisarnos que no vas a poder asistir a este turno !')
+        if request.user.is_staff:
+            messages.warning(request, 'Alumno quitado de la clase')
+        else:
+            messages.warning(request, '¡Gracias por avisarnos que no vas a poder asistir a este turno !')
         #return index_hora(request, turno_id)
         return redirect(reverse('index_horaria', args=[turno_id]))
     else:
