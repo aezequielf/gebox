@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 # Create your views here.
 def login_home(request):
@@ -36,6 +37,7 @@ def login_home(request):
         messages.add_message(request, messages.ERROR, 'Método desconocido', extra_tags='danger')
         return render(request, 'login.html', context)
 
+@login_required
 def user_logout(request):
     logout(request)
     messages.info(request, 'Ha cerrado sesión correctamente')

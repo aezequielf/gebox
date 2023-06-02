@@ -1,5 +1,6 @@
-from django.shortcuts import render, HttpResponse, redirect, reverse
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed
 from django.contrib import messages
 from django.utils import timezone
@@ -8,6 +9,7 @@ from .models import turnos, grupos
 from .utils.semana import dia_num2let
 # Create your views here.
 
+@login_required
 def index_agenda(request):
     if request.method == 'GET':
         dia_inicio_semana = datetime.now().date() - timedelta(days=datetime.now().date().weekday())
@@ -29,6 +31,7 @@ def index_agenda(request):
     else:
         return HttpResponseNotAllowed('<h1> Metodo no disponible</h1>')
 
+@login_required
 def index_diario(request, fecha = None):
    if request.method == 'GET':
         if not fecha:
@@ -53,6 +56,7 @@ def index_diario(request, fecha = None):
    else:
        return HttpResponseNotAllowed('<h1> Metodo no disponible</h1>')
 
+@login_required
 def index_hora(request, id = None):
     if not id:
         return HttpResponseBadRequest('<h1> Faltan parametros en la solicitud </h1>')
@@ -74,6 +78,7 @@ def index_hora(request, id = None):
         context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
     return render(request, 'a_horaria.html', context)
 
+@login_required
 def borra_alumno(request):
     if request.method == 'POST' and request.POST['method_'] == 'DELETE':
         grupo_id = request.POST['item_grupo_id']
@@ -92,6 +97,7 @@ def borra_alumno(request):
     else:
         return HttpResponseNotAllowed('<h1> Metodo no disponible </h1>')
 
+@login_required
 def agrega_alumno(request):
     if request.method == 'POST':
         if not request.POST['id_turno'] or not request.POST['id_user']:
