@@ -36,7 +36,7 @@
                         <input type="hidden" name="item_grupo_id" value="{{ alumno.id }}">
                         {# alumno.id tiene el id del grupo ( grupo = relacion many to many turno_id <==> alumno_id ) #}
                         <input type="hidden" name="id_turno" value="{{ id_turno }}">
-                        <button class="btn btn-outline-danger "><i class="bi bi-trash3-fill"></i> Cancelar</button>
+                        <button class="btn btn-outline-danger" id="btn-1"><i class="bi bi-trash3-fill"></i>Cancelar</button>
 
                       </form>
                     </td>
@@ -49,7 +49,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="id_turno" value="{{ id_turno }}">
                     <input type="hidden" name="id_user" value="{{ user.id }}">
-                    <button type="submit" class="btn btn-outline-success"> <i class="bi bi-pencil"></i> Anotarme</button>
+                    <button type="submit" class="btn btn-outline-success"> <i class="bi bi-pencil"></i>Anotarme</button>
                   </form>
                 </td></tr>
                 {% endif %}
