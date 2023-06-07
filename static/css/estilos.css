@@ -141,3 +141,7 @@ section .botones {
 section table, section th, section tr, section td {
   border: none;
 }
+
+#btn-1 {
+  display: flex !important;
+}
