@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed
 from django.contrib import messages
 from django.utils import timezone
+from django.db.models import Q
 from datetime import datetime, timedelta
 from .models import turnos, grupos
 from .utils.semana import dia_num2let
@@ -21,9 +22,9 @@ def index_agenda(request):
             return render(request, 'sin-agenda.html', context)
         dias_activos = []
         for dia in diario:
-            if dia.dia_hora.date() < timezone.now().date() and not request.user.is_staff:
+            if timezone.localtime(dia.dia_hora).date() < timezone.now().date() and not request.user.is_staff:
                 continue
-            dia_comp= (dia_num2let(dia.dia_hora.date().weekday()),dia.dia_hora.date().strftime('%d-%m-%Y'))
+            dia_comp= (dia_num2let(timezone.localtime(dia.dia_hora).date().weekday()),timezone.localtime(dia.dia_hora).date().strftime('%d-%m-%Y'))
             if dia_comp not in dias_activos:
                 dias_activos.append(dia_comp)
         context = { 'msj': '' , 'dias' : dias_activos}
@@ -38,20 +39,22 @@ def index_diario(request, fecha = None):
             return HttpResponseBadRequest('<h1> Faltan parametros en la solicitud </h1>')
         dia_l = fecha.split('-')
         try:
-            dia = datetime(int(dia_l[2][:4]),int(dia_l[1]),int(dia_l[0]),0,0)
+            dia_in = datetime(int(dia_l[2][:4]),int(dia_l[1]),int(dia_l[0]),3,0)
         except ValueError:
             return HttpResponseBadRequest('<h1> Datos mal formados o invalidos </h1>')
         except IndexError:
             return HttpResponseNotFound('<h1> No se encuentra la URL solicitada </h1>')
-        dia = timezone.make_aware(dia)
-        horarios = turnos.objects.filter(dia_hora__contains=dia.date())
+        dia_fi = dia_in + timedelta(hours=23, minutes=59)
+        dia_in = timezone.make_aware(dia_in)
+        dia_fi = timezone.make_aware(dia_fi)
+        horarios = turnos.objects.filter(Q(dia_hora__range=(dia_in, dia_fi))).order_by('dia_hora')
         horarios_activos = []
         for hora in horarios:
-            if hora.dia_hora < timezone.now() + timedelta(minutes=30) and not request.user.is_staff:
+            if timezone.localtime(hora.dia_hora) < timezone.now() + timedelta(minutes=30) and not request.user.is_staff:
                 continue
             hora_local=timezone.localtime(hora.dia_hora)
             horarios_activos.append((hora_local.time().strftime("%H:%M"),hora.id))
-        context = { 'msj': '', 'fecha' : fecha , 'dia_letras': dia_num2let(dia.weekday()) , 'horarios' : horarios_activos}
+        context = { 'msj': '', 'fecha' : fecha , 'dia_letras': dia_num2let(dia_in.weekday()) , 'horarios' : horarios_activos}
         return render(request, 'a_diaria.html', context )
    else:
        return HttpResponseNotAllowed('<h1> Metodo no disponible</h1>')
@@ -70,12 +73,12 @@ def index_hora(request, id = None):
         if alumno['user__id'] == request.user.id:
             anotarme = False
     if len(alumnos) == 0:
-        context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  } 
-    elif len(alumnos) > 3:
+        context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  } 
+    elif len(alumnos) > 9:
         messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
-        context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
+        context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
     else:
-        context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( fecha['dia_hora'].weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
+        context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
     return render(request, 'a_horaria.html', context)
 
 @login_required
