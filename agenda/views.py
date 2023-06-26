@@ -73,12 +73,27 @@ def index_hora(request, id = None):
         if alumno['user__id'] == request.user.id:
             anotarme = False
     if len(alumnos) == 0:
-        context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  } 
-    elif len(alumnos) > 9:
-        messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
-        context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
+        context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  }   
+    # elif len(alumnos) > 9:
+    #     # messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
+    #     context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
+    elif len(alumnos) == 10 and not any(alumno['user__id'] == request.user.id for alumno in alumnos):
+        messages.warning(request, 'Este turno está lleno')
+        context = {'msj': '', 'alumnos': alumnos, 'dia_letra': dia_num2let(timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora': timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M"), 'id_turno': id, 'anotarme': False}
     else:
-        context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
+        anotado = False
+        for alumno in alumnos:
+            if alumno['user__id'] == request.user.id:
+                anotado = True
+                # messages.warning(request, 'Ya estás registrado en este turno')
+                context = {'msj': '', 'alumnos': alumnos, 'dia_letra': dia_num2let(timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora': timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M"), 'id_turno': id, 'anotarme': False}
+                break
+        if not anotado:
+            context = {'msj': '', 'alumnos': alumnos, 'dia_letra': dia_num2let(timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora': timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M"), 'id_turno': id, 'anotarme': True}    
+    
+
+    # else:
+    #     context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
     return render(request, 'a_horaria.html', context)
 
 @login_required
