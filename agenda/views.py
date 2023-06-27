@@ -78,19 +78,7 @@ def index_hora(request, id = None):
         messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
         context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
     else:
-        anotado = False
-        for alumno in alumnos:
-            if alumno['user__id'] == request.user.id:
-                anotado = True
-                # messages.warning(request, 'Ya estás registrado en este turno')
-                context = {'msj': '', 'alumnos': alumnos, 'dia_letra': dia_num2let(timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora': timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M"), 'id_turno': id, 'anotarme': False}
-                break
-        if not anotado:
-            context = {'msj': '', 'alumnos': alumnos, 'dia_letra': dia_num2let(timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora': timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M"), 'id_turno': id, 'anotarme': True}    
-    
-
-    # else:
-    #     context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
+        context = { 'msj' : '', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': anotarme }
     return render(request, 'a_horaria.html', context)
 
 @login_required
