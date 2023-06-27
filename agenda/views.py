@@ -74,7 +74,7 @@ def index_hora(request, id = None):
             anotarme = False
     if len(alumnos) == 0:
         context = { 'msj' : 'Nadie anotado todavía ...', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") ,'id_turno': id, 'anotarme' : True  } 
-    elif len(alumnos) > 9:
+    elif len(alumnos) > 9 and anotarme:
         messages.warning(request, ' ¡Lo sentimos, este turno está lleno ... !')
         context = { 'msj' : ' ', 'alumnos' : alumnos, 'dia_letra' :  dia_num2let( timezone.localtime(fecha['dia_hora']).weekday()), 'dia_hora' : timezone.localtime(fecha['dia_hora']).strftime("%d-%m-%Y %H:%M") , 'id_turno': id, 'anotarme': False }
     else:
