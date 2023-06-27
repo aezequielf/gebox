@@ -50,8 +50,15 @@ def register(request):
     elif request.method == 'POST':
         if len(User.objects.values('username').filter(email=request.POST['email'])) == 0:
             if request.POST['password1'] == request.POST['password2']:
+                username = ''
+                if len(request.POST['username'].split(' ')) > 1:
+                    for alias in request.POST['username'].split(' '):
+                        username += alias+'_'
+                    username = username[0:-1]
+                else:
+                    username = request.POST['username']   
                 try:
-                   User.objects.create_user(request.POST['username'].capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],is_active=False,date_joined=timezone.now())
+                   User.objects.create_user(username.capitalize(),request.POST['email'],request.POST['password1'],first_name=request.POST['first_name'],last_name=request.POST['last_name'],is_active=False,date_joined=timezone.now())
                 except IntegrityError:
                     context = { 'msj' : '', 'last_name' : request.POST['last_name'],'first_name' : request.POST['first_name'],'email' : request.POST['email'],}
                     messages.add_message(request, messages.INFO, f"¡El alias {request.POST['username']} ya está en uso ! ", extra_tags='secondary')
