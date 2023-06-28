@@ -1,12 +1,14 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <section class="container mt-4 mb-3">
+  <script type="text/javascript">var vuelve=-1; </script>
   {% if messages %}
     {% for mensaje in messages%}
         <div class="alert alert-{{ mensaje.tags }}" role="alert">
            <h3>{{ user.first_name }}</h3> {{ mensaje }}
         </div>
     {% endfor %}
+    <script type="text/javascript">var vuelve=-2; </script>
   {% endif %}
 <div class="row">
     <div class="mb-4 col-md-6 col-xl-6">
@@ -60,8 +62,9 @@
           </div>
           <!-- <div class="card-footer bg-transparent border-danger">Footer</div> -->
         </div>
+        
 
-        <a href="{% url 'index_diario' fecha=dia_hora %}"><button type="button" class=" btn btn-outline-success"><i class="bi bi-arrow-left"> Atrás</i></button></a>
+        <button type="button" class=" btn btn-outline-success" onclick="history.go(vuelve)"><i class="bi bi-arrow-left"> Atrás</i></button>
 
     </div>
 
