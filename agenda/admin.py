@@ -52,6 +52,6 @@ class perfilAdmin(admin.ModelAdmin):
 
 admin.site.register(turnos, turnosAdmin)
 admin.site.register(grupos)
-admin.site.unregister(User)
-admin.site.register(User, perfilAdmin)
+#admin.site.unregister(User)
+#admin.site.register(User, perfilAdmin)
 admin.site.register(params_ag)
