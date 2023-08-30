@@ -4,16 +4,16 @@
     {{ msj }}
     <div class="row">
         <div class="mb-4 col-md-6 col-xl-6">
-          <div class="card border-success mb-3">
-            <span class="d-block p-2 bg-success text-white">{{ user.username }}</span>
-            <div class="card-header bg-transparent border-success">Horarios del {{ dia_letras }} {{ fecha }}</div>  
-            <div class="card-body text-success botones">
+          <div class="card border-danger mb-3">
+            <span class="d-block p-2 bg-danger text-white">{{ user.username }}</span>
+            <div class="card-header bg-transparent border-danger">Horarios del {{ dia_letras }} {{ fecha }}</div>  
+            <div class="card-body text-danger botones">
               {% for hora in horarios%}
-                <a href="{% url 'index_horaria' id=hora.1 %}"><button type="button" class="btn btn-outline-success boton">{{ hora.0 }}</button></a>
+                <a href="{% url 'index_horaria' id=hora.1 %}"><button type="button" class="btn btn-outline-danger boton">{{ hora.0 }}</button></a>
               {% endfor %}
             </div>
           </div>
-          <button type="button" class=" btn btn-outline-success" onclick="history.back()"><i class="bi bi-arrow-left"> Agenda</i></button>
+          <button type="button" class=" btn btn-outline-danger" onclick="history.back()"><i class="bi bi-arrow-left"> Agenda</i></button>
           
         </div>
     </div>

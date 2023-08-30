@@ -11,7 +11,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-family: 'Roboto', sans-serif;
   font-size: large;
-  background-color: #d8d8d8;
+  background-color: #cccccc;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -25,13 +25,13 @@ body footer {
   box-sizing: border-box;
   padding: 10px;
   margin-top: auto;
-  background-image: linear-gradient(to left,#141414,#1f621f);
+  background-color: #141414 !important;
 }
 
 body footer .text-muted {
   --bs-text-opacity: 1;
   font-size: small;
-  color: #d8d8d8 !important;
+  color: #ff0505 !important;
 }
 
 body footer .border-top {
@@ -39,12 +39,12 @@ body footer .border-top {
 }
 
 body footer .bi, body footer .bi-instagram {
-  font-size: large;
+  font-size: medium;
 }
 
 /* NavBar */
 header {
-  background-image: linear-gradient(to right,#141414,#1f621f);
+  background-color: #141414;
   font-size: large !important;
   padding: 10px;
   display: block;
@@ -73,26 +73,26 @@ header li {
 
 header a {
   text-decoration: none;
-  color: #d8d8d8;
+  color: #ff0505;
 }
 
 header a:hover {
-  color: #16c56e;
+  color: #f7f4c4;
 }
 
 header .nav-item {
   flex-wrap: wrap;
   text-decoration: none;
-  color: #d8d8d8;
+  color: #ff0505;
 }
 
 header .nav-link {
   display: inline;
-  color: #d8d8d8;
+  color: #ff0505;
 }
 
 header .nav-link:hover {
-  color: #16c56e;
+  color: #f7f4c4;
 }
 
 header .dropdown-menu {
@@ -100,13 +100,13 @@ header .dropdown-menu {
 }
 
 header .offcanvas {
-  background-color: #2d530a;
-  color: #d8d8d8;
+  background-color: #141414;
+  color: #cccccc;
 }
 
 header .navbar-toggler {
-  background-color: #d8d8d8;
-  color: #d8d8d8;
+  background-color: #cccccc;
+  color: #cccccc;
 }
 
 section .card {
@@ -115,8 +115,7 @@ section .card {
   text-align: center;
 }
 
-.row {
-
+section .row {
   justify-content: center;
   align-items: center;
 }
@@ -128,7 +127,8 @@ section .botones {
   display: grid !important;
   width: 50%;
 }
-.boton {
+
+section .boton {
   flex-grow: 1;
   flex-basis: 0;
   width: 15em;

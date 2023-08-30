@@ -12,10 +12,10 @@
   {% endif %}
 <div class="row">
     <div class="mb-4 col-md-6 col-xl-6">
-        <div class="card border-success mb-3">
-          <span class="d-block p-2 bg-success text-white">{{ user.username }}</span>
-          <div class="card-header bg-transparent border-success">Anotados dia {{ dia_letra }} {{ dia_hora }} </div> <!--horario con back--> 
-          <div class="card-body text-success botones">
+        <div class="card border-danger mb-3">
+          <span class="d-block p-2 bg-danger text-white">{{ user.username }}</span>
+          <div class="card-header bg-transparent border-danger">Anotados dia {{ dia_letra }} {{ dia_hora }} </div> <!--horario con back--> 
+          <div class="card-body text-danger botones">
             <table class="table ">
               <tbody>
                 <thead>
@@ -51,7 +51,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="id_turno" value="{{ id_turno }}">
                     <input type="hidden" name="id_user" value="{{ user.id }}">
-                    <button type="submit" class="btn btn-outline-success"> <i class="bi bi-pencil"></i>Anotarme</button>
+                    <button type="submit" class="btn btn-outline-danger"> <i class="bi bi-pencil"></i>Anotarme</button>
                   </form>
                 </td></tr>
                 {% endif %}
@@ -64,7 +64,7 @@
         </div>
         
 
-        <button type="button" class=" btn btn-outline-success" onclick="history.go(vuelve)"><i class="bi bi-arrow-left"> Atrás</i></button>
+        <button type="button" class=" btn btn-outline-danger" onclick="history.go(vuelve)"><i class="bi bi-arrow-left"> Atrás</i></button>
 
     </div>
 
